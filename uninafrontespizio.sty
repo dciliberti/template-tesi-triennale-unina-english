@@ -71,7 +71,13 @@
 \newcommand{\AnnoAccademico}[1]{\newcommand{\@AnnoAccademico}{#1}}
 \newcommand{\Logo}[1]{\newcommand{\@Logo}{#1}}
 \newcommand{\Relatore}[1]{\listadd{\@relatorilist}{#1}}
-\newcommand{\Correlatore}[1]{\listadd{\@correlatorilist}{#1}}
+
+% Define Correlatore and check if the argument is empty
+\newif\ifcorrelatoreempty
+\correlatoreemptyfalse
+\newcommand{\Correlatore}[1]{%
+    \ifstrempty{#1}{\correlatoreemptytrue}{\listadd{\@correlatorilist}{#1}}
+}
 
 \newcommand{\@Candidato}{}
 \newcommand{\Candidato}[1]{\renewcommand{\@Candidato}{#1}}
@@ -168,9 +174,13 @@
                 \textbf{\@RelatoreLabel}\par
                 \myprintlist{\@relatorilist} 
 
-                \vspace{\@relandcorrelsep}
-                \textbf{\@CorrelatoreLabel}\par
-                \myprintlist{\@correlatorilist}
+                % Write Correlatore only if it is not empty
+                \ifcorrelatoreempty
+                \else
+                    \vspace{\@relandcorrelsep}
+                    \textbf{\@CorrelatoreLabel}\par
+                    \myprintlist{\@correlatorilist}
+                \fi
             \end{minipage}\hfill%
             \begin{minipage}[t]{.45\textwidth}
                 \normalsize
